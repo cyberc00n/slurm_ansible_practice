@@ -1,2 +1,4 @@
-# slurm_ansible_practice
-For the slurm ansible learning course
+```
+🖥️ project for the Slurm ansible learning course🖥️
+
+```
