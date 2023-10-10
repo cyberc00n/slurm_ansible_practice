@@ -4,9 +4,9 @@
 Project for the Slurm ansible learning course
 
 🤓 Dependencies:
-- <a href="[url](https://www.python.org/downloads/)">Python 3</a>
-- <a href="[url](https://pypi.org/project/Jinja2/)">Jinja 2</a>
-- <a href="[url](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)">Ansbile</a>
+- <a href="https://www.python.org/downloads/">Python 3</a>
+- <a href="https://pypi.org/project/Jinja2/">Jinja 2</a>
+- <a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html">Ansbile</a>
 ___________________________________________________________________________
 
 👷‍♂️ Included roles:
