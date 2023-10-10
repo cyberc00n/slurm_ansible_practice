@@ -1,0 +1,40 @@
+
+- name: Install Postgres
+  hosts: {{host}}
+  roles:
+    - postgres
+
+- name: Install NGINX
+  hosts: {{host}}
+  roles:
+    - nginx
+
+- name: Install application
+  tasks:
+    - name: Install required packages
+      yum:
+        name: ["git", "ruby", "ruby-devel", "gcc", "make"]
+        state: presentыыы
+
+    - name: Clone git repository
+      git:
+        repo: 'https://gitlab.slurm.io/edu/xpaste_practicum'
+        dest: '{{APP_PATH}}'
+
+    - name: Set environment variables (optional)
+      shell: echo 'export VAR=value' >> ~/.bashrc
+
+    - name: Install bundler if not exists
+      gem:
+        name: bundler
+        state: present
+
+    - name: Install project dependencies
+      bundler:
+        state: present
+        chdir: '/path/to/destination/folder'
+
+    - name: Start application
+      command: 'bundle exec ruby your_app.rb'
+      args:
+        chdir: '/path/to/destination/folder'
