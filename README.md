@@ -10,7 +10,7 @@ Project for the Slurm ansible learning course
 ___________________________________________________________________________
 
 👷‍♂️ Included roles:
- - nginx install
+ - Nginx install
  - PostgreSQL install 
 ___________________________________________________________________________
 
