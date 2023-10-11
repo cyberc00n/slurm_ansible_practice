@@ -7,6 +7,7 @@
 - <a href="https://www.python.org/downloads/">Python 3</a>
 - <a href="https://pypi.org/project/Jinja2/">Jinja 2</a>
 - <a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html">Ansbile</a>
+- <a href="https://pypi.org/project/psycopg2/">psycopg2</a>
 
 
 #### 🧑‍🏭 Included roles:

@@ -1,9 +1,42 @@
+- name: Python install
+  hosts: test_cent
+  become: yes
+  vars:
+    
+  tasks:
+    - name: Check if Python 3 is installed
+      command: python3 --version
+      ignore_errors: yes
+      register: python3_installed
+
+    - name: Install Python 3 if not installed
+      package:
+        name: python3
+        state: present
+      when: python3_installed.rc != 0
+
+    - name: Install pip for Python 3
+      package:
+        name: python3-pip
+        state: present
+
+    - name: Install required Python packages
+      pip:
+        name:
+          - psycopg2
+        state: present
+        executable: pip3 
+
+    - name: Set ansible_python_interpreter to Python 3
+      set_fact:
+        ansible_python_interpreter: /usr/bin/python3
+
 - name: Install Postgres
-  hosts: {{host}}
+  hosts: test_cent
   roles:
     - postgres
 
-- name: Install NGINX
-  hosts: {{host}}
-  roles:
-    - nginx
+# - name: Install NGINX
+#   hosts: {{ host }}
+#   roles:
+#     - nginx

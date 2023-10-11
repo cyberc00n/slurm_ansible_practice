@@ -1,0 +1,59 @@
+---
+- name: Install PostgreSQL
+  yum:
+    name: ["postgresql-server", "postgresql-contrib"]
+    state: present
+  tags:
+    - install
+
+- name: Check if PostgreSQL is initialized
+  stat:
+    path: /var/lib/pgsql/data/PG_VERSION
+  register: pg_data
+  tags:
+    - init
+
+- name: Initialize PostgreSQL
+  command: postgresql-setup initdb
+  when: not pg_data.stat.exists
+  tags:
+    - init
+
+- name: Start and enable PostgreSQL service
+  systemd:
+    name: postgresql
+    enabled: yes
+    state: started
+  notify:
+    - restart postgresql
+  tags:
+    - service
+
+- name: Wait for PostgreSQL to start
+  wait_for:
+    host: "{{ DB_HOST }}"
+    port: "{{ DB_PORT }}"
+    delay: 5
+    timeout: 30
+  tags:
+    - wait
+
+- name: Create database user
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: "{{ DB_USER }}"
+    password: "{{ DB_PASSWORD }}"
+    encrypted: yes
+  tags:
+    - db
+
+- name: Create database
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ DB_NAME }}"
+    owner: "{{ DB_USER }}"
+  tags:
+    - db
+
