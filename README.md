@@ -1,4 +1,4 @@
-### Project for the Slurm ansible learning course
+### 👽 Project for the Slurm ansible learning course
 
 #### 📦 Requirements:
 - CentOS 7
