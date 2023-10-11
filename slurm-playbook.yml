@@ -14,11 +14,25 @@
         name: python3
         state: present
       when: python3_installed.rc != 0
+    
+    - name: Set ansible_python_interpreter to Python 3
+      set_fact:
+        ansible_python_interpreter: /usr/bin/python3
 
     - name: Install pip for Python 3
       package:
         name: python3-pip
         state: present
+    
+    - name: Install required build tools
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - gcc
+        - python3-devel
+      tags:
+        - install
 
     - name: Install required Python packages
       pip:
@@ -27,9 +41,6 @@
         state: present
         executable: pip3 
 
-    - name: Set ansible_python_interpreter to Python 3
-      set_fact:
-        ansible_python_interpreter: /usr/bin/python3
 
 - name: Install Postgres
   hosts: test_cent
