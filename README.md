@@ -13,7 +13,9 @@
  - Dependencies install
 
 #### ▶️ Usage:
-
+1. Put your vars in the ``` ~/group_vars/all.yml ```
+2. Specify the in the ``` hosts.yml ```
+3. Run the playbook using ``` ansible-playbook -i hosts.yml slurm-playbook.yml ```
 
 
 
