@@ -1,5 +1,3 @@
-### xpaste_practicum playbook
-
 ### Project for the Slurm ansible learning course
 
 #### 📦 Requirements:
