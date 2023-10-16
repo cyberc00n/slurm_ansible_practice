@@ -39,7 +39,6 @@
 - name: Install app dependencies
   ansible.builtin.bundler:
     state: present
-    user_install: true
     chdir: "{{ APP_PATH }}"
     extra_args: "--clean --no-cache --without development"
   ignore_errors: true
