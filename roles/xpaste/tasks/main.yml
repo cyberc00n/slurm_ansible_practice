@@ -1,0 +1,72 @@
+- name: Clone the application repository from GitLab
+  git:
+    repo: 'https://{{ git_username }}:{{ git_password }}@gitlab.slurm.io/edu/xpaste_practicum.git'
+    dest: "{{ APP_PATH }}"
+    version: 'master'
+  become: true
+
+- name: Import RVM's GPG
+  shell: |
+    curl -sSL https://rvm.io/mpapis.asc | sudo gpg2 --import -
+    curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg2 --import -
+
+- name: Get RVM
+  shell: curl -sSL https://get.rvm.io | bash -s stable
+
+# - name: Check RVM
+#   shell: . /etc/profile.d/rvm.sh
+
+- name: Install RVM 2.5
+  shell: 
+    cmd: rvm install 2.5
+    executable: /bin/bash
+
+- name: Install Ruby 2.5 as a default one
+  shell: rvm use 2.5 && rvm alias create default 2.5
+
+- name: Bundler gem 1.16.2 install
+  shell: gem install bundler -v '1.16.2'
+
+- name: Configure bundler for nokogiri
+  shell: bundle config build.nokogiri --use-system-libraries
+
+- name: Skip root warning for bundler
+  ansible.builtin.command:
+    cmd: "bundle config silence_root_warning true"
+    chdir: "{{ APP_PATH }}"
+  become_user: appuser
+
+- name: Install app dependencies
+  ansible.builtin.bundler:
+    state: present
+    user_install: true
+    chdir: "{{ APP_PATH }}"
+    extra_args: "--clean --no-cache --without development"
+  ignore_errors: true
+
+- name: Create systemd service file for My Rails App
+  become: true
+  template:
+    src: xpaste_practicum.service.j2
+    dest: /etc/systemd/system/xpaste.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload systemd to recognize new service
+  become: true
+  systemd:
+    daemon_reload: yes
+
+- name: Enable My Rails App service
+  become: true
+  systemd:
+    name: xpaste
+    enabled: yes
+
+- name: Start My Rails App service
+  become: true
+  systemd:
+    name: xpaste
+    state: started
+

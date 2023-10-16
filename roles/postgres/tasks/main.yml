@@ -1,10 +1,8 @@
 ---
-- name: Install PostgreSQL
+- name: Install requirements for PGSQL
   yum:
-    name: ["postgresql-server", "postgresql-contrib"]
+    name: ['postgresql-server', 'postgresql-contrib']
     state: present
-  tags:
-    - install
 
 - name: Check if PostgreSQL is initialized
   stat:
@@ -18,6 +16,13 @@
   when: not pg_data.stat.exists
   tags:
     - init
+
+- name: Copying pg_hba.conf
+  template:
+    src: pg_hba.conf.j2
+    dest: /var/lib/pgsql/data/pg_hba.conf
+  notify:
+    - restart postgresql
 
 - name: Start and enable PostgreSQL service
   systemd:

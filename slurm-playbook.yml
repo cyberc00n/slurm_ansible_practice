@@ -1,5 +1,5 @@
 - name: Pre-deploy
-  hosts: ruby_app
+  hosts: ruby
     
   tasks:
     - name: Put SELinux in permissive mode
@@ -7,9 +7,14 @@
         policy: targeted
         state: permissive
 
+    - name: Git install
+      yum:
+        name: git
+        state: present
+
     - name: Check if Python 3 is installed
       command: python3 --version
-      ignore_errors: yes
+      ignore_errors: true
       register: python3_installed
 
     - name: Install Python 3 if not installed
@@ -17,22 +22,44 @@
         name: python3
         state: present
       when: python3_installed.rc != 0
-    
+
     - name: Set ansible_python_interpreter to Python 3
       set_fact:
         ansible_python_interpreter: /usr/bin/python3
-    
+
     - name: Install required build tools
       yum:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - python3-pip
-        - gcc
+        name:
+        - '@development tools'
+        - epel-release
+        - zlib-devel
+        - openssl-static
+        - gcc-c++
+        - patch
+        - readline-devel
+        - libffi-devel
+        - openssl-devel
+        - make
+        - bzip2
+        - autoconf
+        - automake
+        - libtool
+        - bison
+        - sqlite-devel
+        - libxml2-devel
+        - libxslt-devel
+        - pkgconfig
         - postgresql-devel
+        - python3-pip
+        - python3-devel
         - postgresql-libs
-      tags:
-        - install
+        state: present
+
+    - name: Install node js
+      yum:
+        name:
+          - nodejs
+        state: present
 
     - name: Install required Python packages
       pip:
@@ -42,11 +69,18 @@
         executable: pip3
 
 - name: Install Postgres
-  hosts: test_cent
+  hosts: ruby
   roles:
     - postgres
 
-# - name: Install NGINX
-#   hosts: {{ host }}
-#   roles:
-#     - nginx
+- name: Install APP
+  vars_files:
+    - slurm_secrets.yml
+  hosts: ruby
+  roles:
+    - xpaste
+
+- name: Install NGINX
+  hosts: ruby
+  roles:
+    - nginx

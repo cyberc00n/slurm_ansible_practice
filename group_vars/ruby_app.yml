@@ -1,7 +1,8 @@
-SERVER_HOST: 
+SERVER_HOST: 139.59.132.17
+APP_SECRET: privetik
 DB_HOST: localhost
 DB_PORT: 5432
-DB_NAME: my_database
-DB_USER: my_user
-DB_PASSWORD: my_password
-APP_PATH: /
+DB_NAME: slurm
+DB_USER: slurm_user
+DB_PASSWORD: slurm_password
+APP_PATH: /var/www/
