@@ -7,7 +7,7 @@
 
 
 #### ▶️ Usage:
-1. Put your vars in the ``` ~/group_vars/all.yml ```
+1. Put your vars in the ``` ~/group_vars/ruby_app.yml ```
 2. Put vault password in the ``` .password ``` file
 2. Run the playbook using ``` ansible-playbook -i hosts.yml slurm-playbook.yml ```
 
