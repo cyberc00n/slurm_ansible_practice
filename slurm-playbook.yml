@@ -83,4 +83,4 @@
 - name: Install NGINX
   hosts: ruby
   roles:
-    - nginx
+    - ansible-role-nginx
