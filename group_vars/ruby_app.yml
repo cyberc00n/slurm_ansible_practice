@@ -4,4 +4,4 @@ DB_PORT: 5432
 DB_NAME: slurm
 DB_USER: slurm_user
 DB_PASSWORD: slurm_password
-APP_PATH: /var/www/
+APP_PATH: /var/www/xpaste
