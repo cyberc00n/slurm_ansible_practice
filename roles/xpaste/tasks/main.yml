@@ -34,7 +34,6 @@
   ansible.builtin.command:
     cmd: "bundle config silence_root_warning true"
     chdir: "{{ APP_PATH }}"
-  become_user: appuser
 
 - name: Install app dependencies
   ansible.builtin.bundler:
